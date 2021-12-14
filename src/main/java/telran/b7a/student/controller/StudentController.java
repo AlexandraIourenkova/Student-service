@@ -56,5 +56,12 @@ public class StudentController {
 	public List<StudentDto> findStudentsByName(@PathVariable String name) {
 			return studentService.findStudentsByName(name);
 	}
-	
+	@PostMapping("/quantity/students")
+	public long studentsNamesQuantity(@RequestBody List<String> names) {
+		return studentService.getStudentsNameQuantity(names);
+	}
+	@GetMapping("/students/exam/{exam}/minscore/{score}")
+	public List<StudentDto> studentsByExamScore(@PathVariable String exam, @PathVariable int score) {
+		return studentService.getStudentsByExamScore(exam, score);
+	}
 }

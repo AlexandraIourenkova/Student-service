@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import telran.b7a.student.dao.StudentMongoRepository;
-import telran.b7a.student.dao.StudentRepository;
 import telran.b7a.student.dto.ScoreDto;
 import telran.b7a.student.dto.StudentCredentialsDto;
 import telran.b7a.student.dto.StudentDto;
@@ -73,11 +72,23 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<StudentDto> findStudentsByName(String name) {
-			return StudentRepository.findAll()
-					.stream()
-					.filter(s -> name.equalsIgnoreCase(s.getName()))
+			return StudentRepository.findByNameIgnoreCase(name)
 					.map(s -> modelMapper.map(s, StudentDto.class))
 					.collect(Collectors.toList());
 	}
+
+	@Override
+	public long getStudentsNameQuantity(List<String> names) {
+		return StudentRepository.countByNameInIgnoreCase(names);
+	}
+
+	@Override
+	public List<StudentDto> getStudentsByExamScore(String exam, int score) {
+		return StudentRepository
+				.findByExam(exam, score)
+				.map(s -> modelMapper.map(s, StudentDto.class))
+				.collect(Collectors.toList());
+	}
+	
 
 }
